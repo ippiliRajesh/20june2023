@@ -9,6 +9,9 @@ pipeline {
     tools {
         jdk 'JDK_8'
     }
+    parameters{
+        choice(name: 'GOAL' , choices: ['package', 'clean package', 'intsall', 'clean install'], description: 'This is Maven goal')
+    }
     stages {
         stage('vcs') {
             steps {
@@ -18,7 +21,7 @@ pipeline {
         }
         stage('build and package') {
             steps {
-                sh script: 'mvn package'
+                sh script: "mvn ${params.GOAL}"
             }
         }
         stage('reporting') {

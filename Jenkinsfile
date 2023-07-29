@@ -28,6 +28,18 @@ pipeline {
             }
         }
     }
+    post{
+        success {
+            mail subject:'your project is effective',
+                 body: 'your project is effective',
+                 to: 'all@qt.com'
+        }
+        failure {
+            mail subject:'your project is deffective',
+                 body: 'your project is deffective',
+                 to: 'all@qt.com'
+        }
+    } 
     
 
 }

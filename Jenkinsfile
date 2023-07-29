@@ -28,18 +28,18 @@ pipeline {
             }
         }
     }
-    post{
+     post{
         success {
-            mail subject:'your project is effective',
-                 body: 'your project is effective',
+            mail subject:"${JOB_NAME}: has completed with success",
+                 body: "your project is effective \n Build Url ${BUILD_URL}",
                  to: 'all@qt.com'
         }
         failure {
-            mail subject:'your project is deffective',
-                 body: 'your project is deffective',
+            mail subject:"${JOB_NAME}: has completed with failure",
+                 body: "your project is deffective \n Build Url ${BUILD_URL}",
                  to: 'all@qt.com'
         }
     } 
     
 
-}
+} 

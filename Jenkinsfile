@@ -8,10 +8,9 @@ pipeline {
     }
     tools {
         jdk 'JDK_8'
+        maven 'MAVEN_DEFAUL'
     }
-    parameters{
-        choice(name: 'GOAL' , choices: ['package', 'clean package', 'intsall', 'clean install'], description: 'This is Maven goal')
-    }
+   
     stages {
         stage('vcs') {
             steps {
@@ -19,14 +18,31 @@ pipeline {
                     branch: 'master'
             }
         }
-        stage('build and package') {
+       stage('build and package') {
             steps {
-                sh script: "mvn ${params.GOAL}"
+                 rtMavenDeployer (
+                    id: "GOF_DEPLOYER",
+                    serverId: "MY_FREE_JFROG",
+                    releaseRepo: 'devops-libs-snapshot-local',
+                    snapshotRepo: 'devops-libs-snapshot-local'
+                )
+                rtMavenRun (
+                    tool: 'MAVEN_DEFAUL', // Tool name from Jenkins configuration
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "GOF_DEPLOYER"
+                    //,
+                    //buildName: "${JOB_NAME}",
+                    //buildNumber: "${BUILD_ID}"
+                )
+                rtPublishBuildInfo (
+                    serverId: "MY_FREE_JFROG"
+                )
             }
         }
+       
         stage('reporting') {
             steps {
-                archiveArtifacts artifacts: '**/gameoflife.war'
                 junit testResults: '**/target/surefire-reports/TEST-*.xml'
             }
         }
@@ -46,3 +62,5 @@ pipeline {
     
 
 } 
+
+

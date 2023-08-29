@@ -3,6 +3,7 @@ LABEL author="Rajesh"
 LABEL organization="learningthoughts"
 RUN adduser -h /petclinic -s /bin/sh -D petclinic
 USER petclinic
+ENV TEST=hello
 WORKDIR /petclinic
 ADD --chown=petclinic:petclinic https://referenceapplicationskhaja.s3.us-west-2.amazonaws.com/spring-petclinic-2.4.2.jar /petclinic/spring-petclinic-2.4.2.jar
 EXPOSE 8080
